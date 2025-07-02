@@ -4,6 +4,21 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("org.graalvm.buildtools.native") version "0.10.6"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("com.diffplug.spotless") version "7.0.4"
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        importOrder()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    kotlinGradle {
+        ktfmt()
+        ktlint()
+    }
 }
 
 group = "com.shinkaji"
