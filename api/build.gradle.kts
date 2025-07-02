@@ -22,23 +22,14 @@ spotless {
 }
 
 group = "com.shinkaji"
+
 version = "0.0.1-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
+configurations { compileOnly { extendsFrom(configurations.annotationProcessor.get()) } }
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 extra["snippetsDir"] = file("build/generated-snippets")
 
@@ -52,13 +43,9 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
+tasks.withType<Test> { useJUnitPlatform() }
 
-tasks.test {
-    outputs.dir(project.extra["snippetsDir"]!!)
-}
+tasks.test { outputs.dir(project.extra["snippetsDir"]!!) }
 
 tasks.asciidoctor {
     inputs.dir(project.extra["snippetsDir"]!!)
