@@ -1,0 +1,20 @@
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+
+# ==== (header)prefix ====
+# feat: 機能を追加/更新する場合
+# fix: バグを修正する場合
+# docs: 文書を更新する場合
+# style: スタイルを変更する場合
+# refactor: リファクタリングを行う場合
+# test: テストを変更する場合
+# chore: ビルドプロセスなどの環境構築の変更を行う場合
+
+# ==== (footer)prefix ====
+# BREAKING CHANGE: 互換性のない変更
+
+# ==== reference ====
+# https://www.conventionalcommits.org/ja/v1.0.0/
