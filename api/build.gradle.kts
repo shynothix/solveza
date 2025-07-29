@@ -6,6 +6,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("com.diffplug.spotless") version "7.0.4"
     id("org.flywaydb.flyway") version "11.10.3"
+    id("org.sonarqube") version "6.2.0.5505"
 }
 
 spotless {
@@ -61,4 +62,12 @@ tasks.test { outputs.dir(project.extra["snippetsDir"]!!) }
 tasks.asciidoctor {
     inputs.dir(project.extra["snippetsDir"]!!)
     dependsOn(tasks.test)
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "shynothix_solveza")
+        property("sonar.organization", "shynothix")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
