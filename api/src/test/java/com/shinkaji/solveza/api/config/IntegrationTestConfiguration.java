@@ -40,7 +40,8 @@ public class IntegrationTestConfiguration {
 
   @Bean
   @Primary
-  public SqlSessionFactory integrationTestSqlSessionFactory(DataSource dataSource) throws Exception {
+  public SqlSessionFactory integrationTestSqlSessionFactory(DataSource dataSource)
+      throws Exception {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
     factoryBean.setDataSource(dataSource);
 
@@ -66,8 +67,8 @@ public class IntegrationTestConfiguration {
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
     PostgreSQLContainer<?> container = SharedTestContainer.getInstance();
-    registry.add("spring.datasource.url", () -> 
-        container.getJdbcUrl() + "&currentSchema=integration_test");
+    registry.add(
+        "spring.datasource.url", () -> container.getJdbcUrl() + "&currentSchema=integration_test");
     registry.add("spring.datasource.username", container::getUsername);
     registry.add("spring.datasource.password", container::getPassword);
     registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");

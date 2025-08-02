@@ -65,8 +65,7 @@ public class E2ETestConfiguration {
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
     PostgreSQLContainer<?> container = SharedTestContainer.getInstance();
-    registry.add("spring.datasource.url", () -> 
-        container.getJdbcUrl() + "&currentSchema=e2e_test");
+    registry.add("spring.datasource.url", () -> container.getJdbcUrl() + "&currentSchema=e2e_test");
     registry.add("spring.datasource.username", container::getUsername);
     registry.add("spring.datasource.password", container::getPassword);
     registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");

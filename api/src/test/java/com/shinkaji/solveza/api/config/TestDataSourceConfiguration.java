@@ -19,10 +19,11 @@ public class TestDataSourceConfiguration {
   private static final PostgreSQLContainer<?> postgresContainer;
 
   static {
-    postgresContainer = new PostgreSQLContainer<>("postgres:16")
-        .withDatabaseName("solveza_test")
-        .withUsername("test")
-        .withPassword("test");
+    postgresContainer =
+        new PostgreSQLContainer<>("postgres:16")
+            .withDatabaseName("solveza_test")
+            .withUsername("test")
+            .withPassword("test");
     postgresContainer.start();
   }
 

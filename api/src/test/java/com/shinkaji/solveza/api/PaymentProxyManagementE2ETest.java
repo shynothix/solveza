@@ -5,13 +5,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shinkaji.solveza.api.account.application.command.CreateAccountCommand;
+import com.shinkaji.solveza.api.config.E2ETestConfiguration;
 import com.shinkaji.solveza.api.shared.domain.Provider;
 import com.shinkaji.solveza.api.transaction.application.command.RecordDepositCommand;
 import com.shinkaji.solveza.api.transaction.application.command.RecordPaymentCommand;
 import com.shinkaji.solveza.api.usermanagement.domain.model.User;
 import com.shinkaji.solveza.api.usermanagement.domain.repository.UserRepository;
 import com.shinkaji.solveza.api.usermanagement.presentation.request.RegisterUserRequest;
-import com.shinkaji.solveza.api.config.E2ETestConfiguration;
 import java.math.BigDecimal;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
