@@ -68,7 +68,7 @@ jobs:
       working-directory: api
 
     - name: Run tests
-      run: ./gradlew test
+      run: ./gradlew test --info --stacktrace
       working-directory: api
       env:
         SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
