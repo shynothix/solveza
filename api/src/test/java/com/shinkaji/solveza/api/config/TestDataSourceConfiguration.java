@@ -4,41 +4,36 @@ import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @TestConfiguration
+@Profile("test")
+@MapperScan("com.shinkaji.solveza.api.**.infrastructure.mapper")
 public class TestDataSourceConfiguration {
 
-  private static final PostgreSQLContainer<?> postgresContainer;
-
-  static {
-    postgresContainer =
-        new PostgreSQLContainer<>("postgres:16")
-            .withDatabaseName("solveza_test")
-            .withUsername("test")
-            .withPassword("test");
-    postgresContainer.start();
-  }
-
   @Bean
+  @Primary
   public static PostgreSQLContainer<?> postgresContainer() {
-    return postgresContainer;
+    return SharedTestContainer.getInstance();
   }
 
   @Bean
   @Primary
   public DataSource testDataSource() {
+    PostgreSQLContainer<?> container = SharedTestContainer.getInstance();
     return DataSourceBuilder.create()
-        .url(postgresContainer.getJdbcUrl())
-        .username(postgresContainer.getUsername())
-        .password(postgresContainer.getPassword())
+        .url(container.getJdbcUrl() + "&currentSchema=test")
+        .username(container.getUsername())
+        .password(container.getPassword())
         .driverClassName("org.postgresql.Driver")
         .build();
   }
@@ -49,11 +44,9 @@ public class TestDataSourceConfiguration {
     SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
     factoryBean.setDataSource(dataSource);
 
-    // MyBatisマッパーファイルの場所を設定
     PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
     factoryBean.setMapperLocations(resolver.getResources("classpath:mapper/**/*.xml"));
 
-    // MyBatis設定
     org.apache.ibatis.session.Configuration configuration =
         new org.apache.ibatis.session.Configuration();
     configuration.setMapUnderscoreToCamelCase(true);
@@ -72,9 +65,10 @@ public class TestDataSourceConfiguration {
 
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
-    registry.add("spring.datasource.username", postgresContainer::getUsername);
-    registry.add("spring.datasource.password", postgresContainer::getPassword);
+    PostgreSQLContainer<?> container = SharedTestContainer.getInstance();
+    registry.add("spring.datasource.url", () -> container.getJdbcUrl() + "&currentSchema=test");
+    registry.add("spring.datasource.username", container::getUsername);
+    registry.add("spring.datasource.password", container::getPassword);
     registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
     registry.add("mybatis.mapper-locations", () -> "classpath:mapper/**/*.xml");
     registry.add("mybatis.configuration.map-underscore-to-camel-case", () -> "true");
