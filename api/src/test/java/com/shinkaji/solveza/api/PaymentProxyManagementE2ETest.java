@@ -11,6 +11,7 @@ import com.shinkaji.solveza.api.transaction.application.command.RecordPaymentCom
 import com.shinkaji.solveza.api.usermanagement.domain.model.User;
 import com.shinkaji.solveza.api.usermanagement.domain.repository.UserRepository;
 import com.shinkaji.solveza.api.usermanagement.presentation.request.RegisterUserRequest;
+import com.shinkaji.solveza.api.config.E2ETestConfiguration;
 import java.math.BigDecimal;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,6 +31,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest
 @AutoConfigureWebMvc
 @ActiveProfiles("e2e-test")
+@Import(E2ETestConfiguration.class)
 @DisabledInNativeImage
 @DisplayName("Payment Proxy Management E2E Tests")
 class PaymentProxyManagementE2ETest {

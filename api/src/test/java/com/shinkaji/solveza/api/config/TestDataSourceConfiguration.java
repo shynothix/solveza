@@ -16,25 +16,28 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @TestConfiguration
 public class TestDataSourceConfiguration {
 
+  private static final PostgreSQLContainer<?> postgresContainer;
+
+  static {
+    postgresContainer = new PostgreSQLContainer<>("postgres:16")
+        .withDatabaseName("solveza_test")
+        .withUsername("test")
+        .withPassword("test");
+    postgresContainer.start();
+  }
+
   @Bean
   public static PostgreSQLContainer<?> postgresContainer() {
-    PostgreSQLContainer<?> container =
-        new PostgreSQLContainer<>("postgres:15")
-            .withDatabaseName("solveza_test")
-            .withUsername("test")
-            .withPassword("test");
-    container.start();
-    return container;
+    return postgresContainer;
   }
 
   @Bean
   @Primary
   public DataSource testDataSource() {
-    PostgreSQLContainer<?> container = postgresContainer();
     return DataSourceBuilder.create()
-        .url(container.getJdbcUrl())
-        .username(container.getUsername())
-        .password(container.getPassword())
+        .url(postgresContainer.getJdbcUrl())
+        .username(postgresContainer.getUsername())
+        .password(postgresContainer.getPassword())
         .driverClassName("org.postgresql.Driver")
         .build();
   }
@@ -68,10 +71,9 @@ public class TestDataSourceConfiguration {
 
   @DynamicPropertySource
   static void configureProperties(DynamicPropertyRegistry registry) {
-    PostgreSQLContainer<?> container = postgresContainer();
-    registry.add("spring.datasource.url", container::getJdbcUrl);
-    registry.add("spring.datasource.username", container::getUsername);
-    registry.add("spring.datasource.password", container::getPassword);
+    registry.add("spring.datasource.url", postgresContainer::getJdbcUrl);
+    registry.add("spring.datasource.username", postgresContainer::getUsername);
+    registry.add("spring.datasource.password", postgresContainer::getPassword);
     registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
     registry.add("mybatis.mapper-locations", () -> "classpath:mapper/**/*.xml");
     registry.add("mybatis.configuration.map-underscore-to-camel-case", () -> "true");
