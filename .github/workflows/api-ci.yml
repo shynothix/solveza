@@ -71,9 +71,7 @@ jobs:
       run: ./gradlew test --info --stacktrace
       working-directory: api
       env:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/test
-        SPRING_DATASOURCE_USERNAME: test
-        SPRING_DATASOURCE_PASSWORD: test
+        SPRING_PROFILES_ACTIVE: test
 
     - name: Build application
       run: ./gradlew build -x test
