@@ -12,6 +12,11 @@ on:
       - 'api/**'
       - '.github/workflows/api-ci.yml'
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -81,6 +86,8 @@ jobs:
         name: Solveza API Tests
         path: api/build/test-results/test/*.xml
         reporter: java-junit
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload coverage reports to Codecov
       if: github.event_name == 'push'
