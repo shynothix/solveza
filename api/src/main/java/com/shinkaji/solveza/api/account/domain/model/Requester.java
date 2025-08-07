@@ -1,0 +1,12 @@
+package com.shinkaji.solveza.api.account.domain.model;
+
+import com.shinkaji.solveza.api.shared.domain.UserId;
+
+public record Requester(UserId userId) {
+
+  public Requester {
+    if (userId == null) {
+      throw new IllegalArgumentException("依頼者のユーザーIDは必須です");
+    }
+  }
+}

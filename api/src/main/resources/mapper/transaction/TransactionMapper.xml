@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shinkaji.solveza.api.transaction.infrastructure.mapper.TransactionMapper">
+
+    <!-- Result Map -->
+    <resultMap id="TransactionResult" type="com.shinkaji.solveza.api.transaction.infrastructure.mapper.dto.TransactionDto">
+        <constructor>
+            <idArg column="id" javaType="String"/>
+            <arg column="account_id" javaType="String"/>
+            <arg column="transaction_type" javaType="String"/>
+            <arg column="amount" javaType="java.math.BigDecimal"/>
+            <arg column="currency" javaType="String"/>
+            <arg column="description" javaType="String"/>
+            <arg column="executed_at" javaType="java.time.LocalDateTime"/>
+            <arg column="created_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <!-- Select Queries -->
+    <select id="findById" resultMap="TransactionResult">
+        SELECT id, account_id, transaction_type, amount, currency, description, executed_at, created_at
+        FROM transactions
+        WHERE id = #{id}::uuid
+    </select>
+
+    <select id="findByAccountId" resultMap="TransactionResult">
+        SELECT id, account_id, transaction_type, amount, currency, description, executed_at, created_at
+        FROM transactions
+        WHERE account_id = #{accountId}::uuid
+        ORDER BY executed_at DESC
+    </select>
+
+    <select id="existsById" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM transactions WHERE id = #{id}::uuid)
+    </select>
+
+    <!-- Insert Queries -->
+    <insert id="insert">
+        INSERT INTO transactions (id, account_id, transaction_type, amount, currency, description, executed_at, created_at)
+        VALUES (#{transaction.id}::uuid, #{transaction.accountId}::uuid, #{transaction.transactionType}, #{transaction.amount}, #{transaction.currency}, #{transaction.description}, #{transaction.executedAt}, #{transaction.createdAt})
+    </insert>
+
+    <!-- Delete Queries -->
+    <delete id="delete">
+        DELETE FROM transactions WHERE id = #{id}::uuid
+    </delete>
+
+</mapper>

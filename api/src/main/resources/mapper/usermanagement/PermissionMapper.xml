@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shinkaji.solveza.api.usermanagement.infrastructure.mapper.PermissionMapper">
+
+    <!-- Result Map -->
+    <resultMap id="PermissionResult" type="com.shinkaji.solveza.api.usermanagement.infrastructure.mapper.dto.PermissionDto">
+        <constructor>
+            <idArg column="id" javaType="String"/>
+            <arg column="name" javaType="String"/>
+            <arg column="resource" javaType="String"/>
+            <arg column="action" javaType="String"/>
+            <arg column="created_at" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <!-- Select Queries -->
+    <select id="findById" resultMap="PermissionResult">
+        SELECT id, name, resource, action, created_at
+        FROM permissions
+        WHERE id = #{id}::uuid
+    </select>
+
+    <select id="findByName" resultMap="PermissionResult">
+        SELECT id, name, resource, action, created_at
+        FROM permissions
+        WHERE name = #{name}
+    </select>
+
+
+    <select id="findAll" resultMap="PermissionResult">
+        SELECT id, name, resource, action, created_at
+        FROM permissions
+        ORDER BY name
+    </select>
+
+    <select id="existsById" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM permissions WHERE id = #{id}::uuid)
+    </select>
+
+    <select id="existsByName" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM permissions WHERE name = #{name})
+    </select>
+
+    <!-- Insert Queries -->
+    <insert id="insert">
+        INSERT INTO permissions (id, name, resource, action, created_at)
+        VALUES (#{permission.id}::uuid, #{permission.name}, #{permission.resource}, #{permission.action}, #{permission.createdAt})
+    </insert>
+
+    <!-- Update Queries -->
+    <update id="update">
+        UPDATE permissions
+        SET name = #{permission.name},
+            resource = #{permission.resource},
+            action = #{permission.action}
+        WHERE id = #{permission.id}::uuid
+    </update>
+
+    <!-- Delete Queries -->
+    <delete id="delete">
+        DELETE FROM permissions WHERE id = #{id}::uuid
+    </delete>
+
+</mapper>
