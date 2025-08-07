@@ -102,7 +102,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0
         sparse-checkout: |
           api
         sparse-checkout-cone-mode: false
@@ -138,5 +137,4 @@ jobs:
       run: ./gradlew build sonar --info
       working-directory: api
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
