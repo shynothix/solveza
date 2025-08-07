@@ -66,7 +66,7 @@ tasks.asciidoctor {
 
 sonar {
     properties {
-        property("sonar.projectKey", "shynothix_solveza")
+        property("sonar.projectKey", "shynothix_solveza_backend_rest_api")
         property("sonar.organization", "shynothix")
         property("sonar.host.url", "https://sonarcloud.io")
     }
